@@ -1,4 +1,4 @@
-package com.pet.modal.response;
+package com.fit.modal.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;

@@ -1,14 +1,13 @@
 package com.fit.controller.auth;
 
-import com.pet.modal.request.*;
-import com.pet.modal.response.ApiResponse;
-import com.pet.modal.response.LoginResponseDTO;
-import com.pet.service.AuthService;
+import com.fit.modal.request.LoginRequestDTO;
+import com.fit.modal.request.RefreshTokenRequest;
+import com.fit.modal.response.ApiResponse;
+import com.fit.modal.response.LoginResponseDTO;
+import com.fit.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -17,45 +16,25 @@ public class AuthController {
 
     private final AuthService service;
 
-    @PostMapping("/register")
-    public ResponseEntity<LoginResponseDTO> register(
-            @RequestBody RegisterRequestDTO request
-    ) {
-
-        return ResponseEntity.ok(service.register(request));
-    }
-
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> authenticate(
-            @RequestBody LoginRequestDTO request
-    ) {
-        System.out.println("Controller nhan dang nhap user: " + request.getIdentifier());
-        System.out.println(service.login(request));
-        return ResponseEntity.ok(service.login(request));
+    public ResponseEntity<ApiResponse> authenticate(@RequestBody LoginRequestDTO request) {
+        LoginResponseDTO loginData = service.login(request);
+
+        return ResponseEntity.ok(ApiResponse.builder()
+                .status(200)
+                .message("Đăng nhập thành công")
+                .data(loginData)
+                .build());
     }
 
     @PostMapping("/refresh-token")
-    public ResponseEntity<LoginResponseDTO> refreshToken(@RequestBody RefreshTokenRequest request) {
-        return ResponseEntity.ok(service.refreshToken(request));
-    }
+    public ResponseEntity<ApiResponse> refreshToken(@RequestBody RefreshTokenRequest request) {
+        LoginResponseDTO refreshData = service.refreshToken(request);
 
-    @PostMapping("/forgot-password")
-    public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> body) {
-        String email = body.get("email");
-        service.sendOtp(email);
-        return ResponseEntity.ok("OTP đã được gửi vào email!");
-    }
-
-    @PostMapping("/verify-otp")
-    public ResponseEntity<?> verifyOtp(@RequestBody VerifyOtpRequest req) {
-        boolean ok = service.verifyOtp(req.getEmail(), req.getOtp());
-        return ok ? ResponseEntity.ok("OTP hợp lệ")
-                : ResponseEntity.badRequest().body("OTP không đúng!");
-    }
-
-    @PostMapping("/reset-password")
-    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest req) {
-        service.resetPassword(req.getEmail(), req.getNewPassword());
-        return ResponseEntity.ok("Đặt lại mật khẩu thành công!");
+        return ResponseEntity.ok(ApiResponse.builder()
+                .status(200)
+                .message("Lấy token mới thành công")
+                .data(refreshData)
+                .build());
     }
 }
