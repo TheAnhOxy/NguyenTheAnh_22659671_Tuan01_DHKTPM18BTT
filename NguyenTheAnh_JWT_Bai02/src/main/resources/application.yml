@@ -1,0 +1,75 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: petShop-petopia
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+  ai:
+    openai:
+      api-key: ${GEMINI_API_KEY}
+
+
+      # Xóa dấu / ở cuối đường dẫn
+      base-url: "https://generativelanguage.googleapis.com/v1beta/openai"
+      chat:
+        options:
+          model: "gemini-1.5-flash-latest"
+          temperature: 0.7
+
+  profiles:
+    active: dev
+
+#  autoconfigure:
+#    exclude:
+#      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+
+  jpa:
+    hibernate:
+      ddl-auto: none  # Các lựa chọn: none, update, create, create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        enable_lazy_load_no_trans: true
+        format_sql: true
+        logging:
+          level:
+            org:
+              hibernate:
+                SQL=DEBUG:
+    show-sql: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+sepay:
+  bank-code: ICB
+  account-no: 109876820087
+  template: compact
+logging:
+  level:
+    root: INFO
+    web: INFO
+#    org.springframework: DEBUG
+#    org.springdoc: DEBUG
+#    org.apache.commons: DEBUG
+    org.springframework.data.repository: DEBUG
+
+jwt:
+  secretKey: "UGV0b3BpYS1Qcm9qZWN0LVNlY3JldC1LZXktRm9yLUpXVC1HZW5lcmF0aW9uLVZlcnktU2VjdXJlLUFuZC1Mb25n"
+#  expiration: 86400
+  expiration: 86400000          # 1 ngày (Access Token)
+  refresh-expiration: 604800000 # 7 ngày (Refresh Token) - Thêm dòng này
+
+dev:
+  nguyen: Nguyen-The-Anh
+
+cloudinary:
+  cloud_name: "dybv2kwhk"
+  api_key: "828476781652141"
+  api_secret: "KNJf4ivOJ-aZ7jwlfrrxria-xWs"
