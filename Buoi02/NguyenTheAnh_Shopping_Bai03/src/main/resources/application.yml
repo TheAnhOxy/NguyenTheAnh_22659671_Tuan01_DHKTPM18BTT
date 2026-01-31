@@ -1,0 +1,28 @@
+server:
+  port: 8080
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+
+spring:
+  datasource:
+    # Thêm createDatabaseIfNotExist và characterEncoding
+    url: jdbc:mysql://localhost:3306/order_management?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: Theanh@123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      # QUAN TRỌNG: Đổi sang update để tự tạo bảng orders
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp # Sửa lỗi từ .spam thành .jsp
