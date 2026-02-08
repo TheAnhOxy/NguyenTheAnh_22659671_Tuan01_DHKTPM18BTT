@@ -1,0 +1,17 @@
+server:
+  port: 8080
+
+resilience4j:
+  retry:
+    instances:
+      serviceBRetry:
+        maxAttempts: 3
+        waitDuration: 2s
+  circuitbreaker:
+    instances:
+      serviceBCircuitBreaker:
+        slidingWindowSize: 6
+        failureRateThreshold: 50
+        waitDurationInOpenState: 15s
+        permittedNumberOfCallsInHalfOpenState: 2
+        registerHealthIndicator: true
